@@ -3,7 +3,7 @@ Includes insertion, deletion, search, and traversal methods."""
 
 class BinaryTree:
     def __init__(self):
-        self.tree = None
+        self.tree: tuple = ()
     def insert(self, value):
         def _insert(node, value):
             if not node:
