@@ -1,65 +1,74 @@
-class BSTNode:
-    def __init__(self, value):
-        self.value = value
-        self.left: BSTNode | None = None
-        self.right: BSTNode | None = None
+"""Binary Search Tree (BST) as nested tuples in Python.
+Includes insertion, deletion, search, and traversal methods."""
 
 class BinaryTree:
     def __init__(self):
-        self.root: BSTNode | None = None
-
+        self.tree = None
     def insert(self, value):
-        self.root = self._insert_recursive(self.root, value)
-
-    def _insert_recursive(self, current: BSTNode | None, value) -> BSTNode:
-        if current is None:
-            return BSTNode(value)
-        
-        if value < current.value:
-            current.left = self._insert_recursive(current.left, value)
-        else:
-            current.right = self._insert_recursive(current.right, value)
-        return current
-
+        def _insert(node, value):
+            if not node:
+                return (value, (), ())
+            root, left, right = node
+            if value < root:
+                return (root, _insert(left, value), right)
+            elif value > root:
+                return (root, left, _insert(right, value))
+            return node
+        self.tree = _insert(self.tree, value)
+    def search(self, value):
+        def _search(node, value):
+            if not node:
+                return False
+            root, left, right = node
+            if value == root:
+                return True
+            elif value < root:
+                return _search(left, value)
+            else:
+                return _search(right, value)
+        return _search(self.tree, value)
     def delete(self, value):
-        self.root = self._delete_recursive(self.root, value)
-
-    def _delete_recursive(self, current: BSTNode | None, value) -> BSTNode | None:
-        if current is None:
-            return None
-
-        if value < current.value:
-            current.left = self._delete_recursive(current.left, value)
-        elif value > current.value:
-            current.right = self._delete_recursive(current.right, value)
-        else:
-            if current.left is None:
-                return current.right
-            elif current.right is None:
-                return current.left
-
-            temp = self._get_min_value_node(current.right)
-            current.value = temp.value
-            current.right = self._delete_recursive(current.right, temp.value)
-            
-        return current
-
-    def _get_min_value_node(self, node: BSTNode) -> BSTNode:
+        def _delete(node, value):
+            if not node:
+                return node
+            root, left, right = node
+            if value < root:
+                return (root, _delete(left, value), right)
+            elif value > root:
+                return (root, left, _delete(right, value))
+            else:
+                # Node with only one child or no child
+                if not left:
+                    return right
+                elif not right:
+                    return left
+                # Node with two children: Get the inorder successor (smallest in the right subtree)
+                succ_value = self._min_value(right)
+                return (succ_value, left, _delete(right, succ_value))
+        self.tree = _delete(self.tree, value)
+    def _min_value(self, node):
         current = node
-        while current.left is not None:
-            current = current.left
-        return current
-    
-    def search(self, value) -> bool:
-        return self._search_recursive(self.root, value)
-    
-    def _search_recursive(self, current: BSTNode | None, value) -> bool:
-        if current is None:
-            return False
-        if value == current.value:
-            return True
-        elif value < current.value:
-            return self._search_recursive(current.left, value)
-        else:
-            return self._search_recursive(current.right, value)
-            
+        while current and current[1]:  # Traverse to the leftmost node
+            current = current[1]
+        return current[0] if current else None
+    def inorder_traversal(self):
+        def _inorder(node):
+            if not node:
+                return []
+            root, left, right = node
+            return _inorder(left) + [root] + _inorder(right)
+        return _inorder(self.tree)
+    def preorder_traversal(self):
+        def _preorder(node):
+            if not node:
+                return []
+            root, left, right = node
+            return [root] + _preorder(left) + _preorder(right)
+        return _preorder(self.tree)
+    def postorder_traversal(self):
+        def _postorder(node):
+            if not node:
+                return []
+            root, left, right = node
+            return _postorder(left) + _postorder(right) + [root]
+        return _postorder(self.tree)
