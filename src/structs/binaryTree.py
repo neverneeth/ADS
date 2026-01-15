@@ -1,74 +1,86 @@
-"""Binary Search Tree (BST) as nested tuples in Python.
-Includes insertion, deletion, search, and traversal methods."""
-
 class BinaryTree:
     def __init__(self):
-        self.tree: tuple = ()
+        self.tree = None
+
     def insert(self, value):
         def _insert(node, value):
-            if not node:
-                return (value, (), ())
+            if node is None:
+                return (value, None, None)
             root, left, right = node
             if value < root:
-                return (root, _insert(left, value), right)
-            elif value > root:
-                return (root, left, _insert(right, value))
-            return node
+                left = _insert(left, value)
+            else:
+                right = _insert(right, value)
+            return (root, left, right)
+        
         self.tree = _insert(self.tree, value)
-    def search(self, value):
-        def _search(node, value):
-            if not node:
-                return False
-            root, left, right = node
-            if value == root:
-                return True
-            elif value < root:
-                return _search(left, value)
-            else:
-                return _search(right, value)
-        return _search(self.tree, value)
-    def delete(self, value):
-        def _delete(node, value):
-            if not node:
-                return node
-            root, left, right = node
-            if value < root:
-                return (root, _delete(left, value), right)
-            elif value > root:
-                return (root, left, _delete(right, value))
-            else:
-                # Node with only one child or no child
-                if not left:
-                    return right
-                elif not right:
-                    return left
-                # Node with two children: Get the inorder successor (smallest in the right subtree)
-                succ_value = self._min_value(right)
-                return (succ_value, left, _delete(right, succ_value))
-        self.tree = _delete(self.tree, value)
-    def _min_value(self, node):
-        current = node
-        while current and current[1]:  # Traverse to the leftmost node
-            current = current[1]
-        return current[0] if current else None
+
     def inorder_traversal(self):
         def _inorder(node):
-            if not node:
+            if node is None:
                 return []
             root, left, right = node
             return _inorder(left) + [root] + _inorder(right)
+        
         return _inorder(self.tree)
+
     def preorder_traversal(self):
         def _preorder(node):
-            if not node:
+            if node is None:
                 return []
             root, left, right = node
             return [root] + _preorder(left) + _preorder(right)
+        
         return _preorder(self.tree)
-    def postorder_traversal(self):
-        def _postorder(node):
+
+    @staticmethod
+    def from_tuple(tree_tuple):
+        bt = BinaryTree()
+        bt.tree = tree_tuple
+        return bt
+    
+    def to_tuple(self):
+        return self.tree
+    
+    def get_height(self):
+        def _get_height(node):
             if not node:
-                return []
+                return 0
             root, left, right = node
-            return _postorder(left) + _postorder(right) + [root]
-        return _postorder(self.tree)
+            return 1 + max(_get_height(left), _get_height(right))
+        return _get_height(self.tree)
+    
+    def _replace_node(self, current, target, new_subtree):
+        """
+        Recursively replace the first occurrence of target node with new_subtree in the tree.
+        Returns the new tree with the replacement.
+        """
+        if current is None:
+            return None
+        if current is target:
+            return new_subtree
+        root, left, right = current
+        return (root, self._replace_node(left, target, new_subtree), self._replace_node(right, target, new_subtree))
+
+    def rotate_right(self, node: tuple):
+        """
+        Rotates right at the given node and updates the tree instance in-place.
+        """
+        if not node or not node[1]:
+            return
+        root, left, right = node
+        left_root, left_left, left_right = left
+        new_root = (left_root, left_left, (root, left_right, right))
+        self.tree = self._replace_node(self.tree, node, new_root)
+
+    def rotate_left(self, node: tuple):
+        """
+        Rotates left at the given node and updates the tree instance in-place.
+        """
+        if not node or not node[2]:
+            return
+        root, left, right = node
+        right_root, right_left, right_right = right
+        new_root = (right_root, (root, left, right_left), right_right)
+        self.tree = self._replace_node(self.tree, node, new_root)
+    

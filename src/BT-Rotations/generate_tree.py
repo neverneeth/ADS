@@ -4,7 +4,7 @@ sys.path.append("..")
 
 from structs.binaryTree import BinaryTree 
 
-def generate_right_skewed_tree(n) -> BinaryTree:
+def generate_right_skewed_tree(n):
     """
     Docstring for generate_right_skewed_tree
     
