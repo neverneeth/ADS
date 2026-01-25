@@ -1,6 +1,11 @@
+from typing import Optional, Tuple, Any
+
+TreeNode = Optional[Tuple[Any, 'TreeNode', 'TreeNode']]
+
+
 class BinaryTree:
-    def __init__(self):
-        self.tree = None
+    def __init__(self, tree: TreeNode = None):
+        self.tree = tree
 
     def insert(self, value):
         def _insert(node, value):
@@ -34,12 +39,12 @@ class BinaryTree:
         return _preorder(self.tree)
 
     @staticmethod
-    def from_tuple(tree_tuple):
+    def from_tuple(tree_tuple: TreeNode) -> 'BinaryTree':
         bt = BinaryTree()
         bt.tree = tree_tuple
         return bt
     
-    def to_tuple(self):
+    def to_tuple(self) -> TreeNode:
         return self.tree
     
     def get_height(self):
@@ -50,7 +55,7 @@ class BinaryTree:
             return 1 + max(_get_height(left), _get_height(right))
         return _get_height(self.tree)
     
-    def _replace_node(self, current, target, new_subtree):
+    def _replace_node(self, current: TreeNode, target: TreeNode, new_subtree: TreeNode) -> TreeNode:
         """
         Recursively replace the first occurrence of target node with new_subtree in the tree.
         Returns the new tree with the replacement.
@@ -62,24 +67,28 @@ class BinaryTree:
         root, left, right = current
         return (root, self._replace_node(left, target, new_subtree), self._replace_node(right, target, new_subtree))
 
-    def rotate_right(self, node: tuple):
+    def rotate_right(self, node: TreeNode):
         """
         Rotates right at the given node and updates the tree instance in-place.
         """
         if not node or not node[1]:
             return
         root, left, right = node
+        if left is None:
+            return
         left_root, left_left, left_right = left
         new_root = (left_root, left_left, (root, left_right, right))
         self.tree = self._replace_node(self.tree, node, new_root)
 
-    def rotate_left(self, node: tuple):
+    def rotate_left(self, node: TreeNode):
         """
         Rotates left at the given node and updates the tree instance in-place.
         """
         if not node or not node[2]:
             return
         root, left, right = node
+        if right is None:
+            return
         right_root, right_left, right_right = right
         new_root = (right_root, (root, left, right_left), right_right)
         self.tree = self._replace_node(self.tree, node, new_root)
