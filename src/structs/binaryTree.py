@@ -20,6 +20,16 @@ class BinaryTree:
         
         self.tree = _insert(self.tree, value)
 
+    def generate_right_skewed_tree(self, n):
+        """
+        Docstring for generate_right_skewed_tree
+        
+        :param n: Size of the tree, defined as the number of (internal) nodes.
+        :return: A right-skewed binary tree with n nodes.
+        """
+        for i in range(1, n+1):
+            self.insert(i)
+    
     def inorder_traversal(self):
         def _inorder(node):
             if node is None:
@@ -54,6 +64,16 @@ class BinaryTree:
             root, left, right = node
             return 1 + max(_get_height(left), _get_height(right))
         return _get_height(self.tree)
+    
+    def get_size(self) -> int:
+        tup = self.to_tuple()
+        if tup is None:
+            return 0
+        root, left, right = tup
+        left_size = BinaryTree.from_tuple(left).get_size()
+        right_size = BinaryTree.from_tuple(right).get_size()
+        return 1 + left_size + right_size
+        
     
     def _replace_node(self, current: TreeNode, target: TreeNode, new_subtree: TreeNode) -> TreeNode:
         """

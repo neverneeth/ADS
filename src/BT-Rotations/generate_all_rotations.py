@@ -15,7 +15,6 @@ at each node level by level.
 import sys
 
 sys.path.append("..")
-from generate_tree import generate_right_skewed_tree
 from structs.binaryTree import BinaryTree
 from collections import deque
 
@@ -27,7 +26,8 @@ def generate_all_rotations(n):
     :param n: Number of nodes in the right-skewed binary tree.
     :return: A list of BinaryTree instances representing all rotationally equivalent trees.
     """
-    initial_tree = generate_right_skewed_tree(n)
+    initial_tree = BinaryTree()
+    initial_tree.generate_right_skewed_tree(n)
     unique_trees = set()
     result_trees = []
 
