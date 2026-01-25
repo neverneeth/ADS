@@ -9,6 +9,8 @@ class TriangulatedPolygon:
     def from_binary_tree(self, binary_tree: BinaryTree):
         """
         Docstring for from_binary_tree
+
+        In the STT paper, a correspondence between binary trees and triangulated polygons is described.
         
         :param self: Description
         :param binary_tree: Description
