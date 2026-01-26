@@ -21,12 +21,14 @@ def compute_rotation_distance_matrix(n):
     
     :param n: Number of nodes in the binary trees.
     :return: A 2D numpy array representing the rotation distance matrix.
+    :return: The rotation diameter of the graph.
     """
 
     all_trees, adjacency = gar.generate_all_rotations(n)
     num_trees = len(all_trees)
     distance_matrix = np.full((num_trees, num_trees), np.inf)
-
+    max_distance = num_trees - 1
+    np.fill_diagonal(distance_matrix, 0)
     tree_index = {str(tree.preorder_traversal()): idx for idx, tree in enumerate(all_trees)}
     for idx, tree in enumerate(all_trees):
         start_preorder = str(tree.preorder_traversal())
@@ -45,11 +47,13 @@ def compute_rotation_distance_matrix(n):
             for neighbor in adjacency.get(current_preorder, []):
                 if neighbor not in visited:
                     queue.append((neighbor, dist + 1))
-    return distance_matrix
+                    if dist + 1 > max_distance:
+                        max_distance = dist + 1
+    return distance_matrix, max_distance
 
 if __name__ == "__main__":
     n = 3
-    distance_matrix = compute_rotation_distance_matrix(n)
+    distance_matrix, max_distance = compute_rotation_distance_matrix(n)
     all_trees, _ = gar.generate_all_rotations(n)
     print(f"Rotation distance matrix for binary trees of size {n}:")
     for i, row in enumerate(distance_matrix):
