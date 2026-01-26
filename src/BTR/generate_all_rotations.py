@@ -59,12 +59,14 @@ def generate_all_rotations(n):
                 new_tree_right = BinaryTree.from_tuple(current_tree.to_tuple())
                 new_tree_right.rotate_right(node)
                 queue.append(new_tree_right)
-                adjacency[preorder].append(str(new_tree_right.preorder_traversal()))
+                if preorder != str(new_tree_right.preorder_traversal()):
+                    adjacency[preorder].append(str(new_tree_right.preorder_traversal()))
 
                 new_tree_left = BinaryTree.from_tuple(current_tree.to_tuple())
                 new_tree_left.rotate_left(node)
                 queue.append(new_tree_left)
-                adjacency[preorder].append(str(new_tree_left.preorder_traversal()))
+                if preorder != str(new_tree_left.preorder_traversal()):
+                    adjacency[preorder].append(str(new_tree_left.preorder_traversal()))
     return result_trees, adjacency
 
 if __name__ == "__main__":

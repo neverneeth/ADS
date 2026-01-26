@@ -3,7 +3,7 @@ from math import cos, sin, pi
 import sys
 
 sys.path.append('.')
-from binaryTree import BinaryTree, TreeNode
+from src.structs.binaryTree import BinaryTree, TreeNode
 
 
 class TriangulatedPolygon:

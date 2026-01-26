@@ -112,4 +112,3 @@ class BinaryTree:
         right_root, right_left, right_right = right
         new_root = (right_root, (root, left, right_left), right_right)
         self.tree = self._replace_node(self.tree, node, new_root)
-    
