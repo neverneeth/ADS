@@ -85,6 +85,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run experiments on binary tree rotations and associahedrons.")
     parser.add_argument('--min_n', type=int, default=3, help='Minimum size of binary trees (default: 3)')
     parser.add_argument('--max_n', type=int, default=7, help='Maximum size of binary trees (default: 7)')
-    parser.add_argument('--results_dir', type=str, default='./results', help='Directory to save results (default: ./results)')
+    parser.add_argument('--results_dir', type=str, default='./results/BTR', help='Directory to save results (default: ./results)')
     args = parser.parse_args()
     run_experiments(mix_n=args.min_n, max_n=args.max_n, results_dir=args.results_dir)
