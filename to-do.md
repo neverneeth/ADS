@@ -9,3 +9,19 @@ rotation
 - [x] Compute rotation distance using BFS on the graph
 - [x] Represent the rotation distance as a matrix
 
+# Runtime Benchmarking
+
+- [ ] For a fixed n, measure the execution time for 
+    - [ ] generating all trees of size n
+    - [ ] constructing the rotation graph
+    - [ ] computing the distance matrix
+- [ ] Create a csv file for recording the execution times, also include columns for number of trees in the file
+
+# Memory Usage Profiling
+
+- [ ] For each n record the memory usage for
+    - [ ] storing the trees
+    - [ ] storing the rotation graph
+    - [ ] storing the distance matrix
+- [ ] Create a csv file for these stats
+
