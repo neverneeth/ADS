@@ -17,7 +17,7 @@ A collection of source code associated with learnings/assignments of the **Advan
     ```
 2. **Set Up Virtual Environment**:
     ```bash
-        python3 -m venv venv
+        python -m venv venv
         source venv/bin/activate
     ```
 3. **Install Dependencies**:
