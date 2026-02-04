@@ -3,6 +3,9 @@ __pycache__/
 *.py[codz]
 *$py.class
 
+# Config files
+pyvenv.cfg
+
 # C extensions
 *.so
 
@@ -15,11 +18,15 @@ downloads/
 eggs/
 .eggs/
 lib/
+bin/
+
+etc/   
 lib64/
 parts/
 sdist/
 var/
 wheels/
+share/
 share/python-wheels/
 *.egg-info/
 .installed.cfg
