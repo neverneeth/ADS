@@ -45,16 +45,22 @@ class AssociahedronGraph:
         G = nx.Graph(adjacency)
         return G
     
-    def visualize(self, path = None):
+    def visualize(self, path=None):
         """
         Visualizes the rotation graph using matplotlib and custom logic
         """
 
+        if path:
+            os.makedirs(path, exist_ok=True)
+
+        plt.clf()
         graph = self.graph
         layout = nx.layout.spring_layout(graph)
-        nx.draw(graph, pos=layout, with_labels=True, node_size=200)
+        nx.draw(graph, pos=layout, with_labels=True, node_size=50, font_size=6)
         if path:
-            plt.savefig(f"{path}/rotation_graph_n{self.n}.png")
+            outfile = os.path.join(path, f"rotation_graph_n{self.n}.png")
+            plt.savefig(outfile)
+            plt.close()
 
     def count(self):
         """
@@ -67,7 +73,7 @@ class AssociahedronGraph:
 
 
 if __name__ == "__main__":
-    n = 5  # Example size
+    n = 5 
     fig, ax = plt.subplots(figsize=(n*3, n*3))
     associahedron_graph = AssociahedronGraph(n)
     

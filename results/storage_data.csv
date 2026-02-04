@@ -1,0 +1,6 @@
+n,num_trees,num_edges,tree_size,associahedron_size,distance_matrix_size
+3,5,5,120,48,200
+4,14,21,184,48,1568
+5,42,84,472,48,14112
+6,132,330,1240,48,139392
+7,429,1287,3704,48,1472328
